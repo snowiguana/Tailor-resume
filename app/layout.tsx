@@ -25,9 +25,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiase`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full min-w-full flex flex-col bg-white">
+        <header className="h-16 flex py-4 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64 items-center justify-between bg-white text-black text-xl font-semibold ">
+          {/* left  */}
+          <div className="text-blue-700">Tailor Your Resume</div>
+          {/* right */}
+          <div className="text-blue-700">random Icons</div>
+        </header>
+        {children}
+      </body>
     </html>
   );
 }
