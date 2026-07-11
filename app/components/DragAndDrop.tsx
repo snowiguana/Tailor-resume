@@ -1,13 +1,15 @@
 "use client";
 import React, { ChangeEvent, DragEvent, useRef, useState } from "react";
+import { parseDocumentAction } from "../actions/parse";
 
 interface DragAndDropProps {
   file: File | null;
   setFile: (file: File | null) => void;
+  setExtractedText: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const DragAndDrop = ({ file, setFile }: DragAndDropProps) => {
-  const MAX_FILE_SIZE = 20 * 1024 * 1024;
+const DragAndDrop = ({ file, setFile, setExtractedText }: DragAndDropProps) => {
+  const MAX_FILE_SIZE = 1024 * 1024;
 
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
@@ -23,10 +25,28 @@ const DragAndDrop = ({ file, setFile }: DragAndDropProps) => {
     setIsDragging(false);
   };
 
+  const handleUpload = async (selectedFile: File) => {
+    setExtractedText("");
+
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    const result = await parseDocumentAction(formData);
+
+    if (result.success) {
+      setExtractedText(String(result.extractedText));
+    } else {
+      setFile(null);
+      console.log("text extraction failed");
+      console.log(result.error);
+    }
+  };
+
   const validateAndSetFile = (selectedFile: File) => {
     //Check Size
     if (selectedFile.size > MAX_FILE_SIZE) {
-      alert("File is too large! Please select a file smaller than 20MB.");
+      alert("File is too large! Please select a file smaller than 1 MB.");
       return;
     }
     // 2. Check Type
@@ -40,6 +60,7 @@ const DragAndDrop = ({ file, setFile }: DragAndDropProps) => {
       return;
     }
     setFile(selectedFile);
+    handleUpload(selectedFile);
   };
 
   const handleUploadButtonClick = () => {
@@ -56,20 +77,23 @@ const DragAndDrop = ({ file, setFile }: DragAndDropProps) => {
 
   return (
     <div className="flex flex-col gap-4 mt-4 ">
-      <div className="flex items-center gap-4">
-        <span>Upload file pdf or docx</span>
+      <div className="flex items-center justify-between gap-4">
+        <span className={`${file ? "hidden" : "block"}`}>
+          Upload Resume pdf or docx less than 1 MB
+        </span>
         <button
-          className={`${file ? "hidden" : "block"} px-4 py-2 bg-blue-700 rounded-2xl text-white cursor-pointer font-bold hover:bg-blue-500`}
+          className={`${file ? "hidden" : "block"} px-4 mr-2 py-2 bg-blue-700 rounded-2xl text-white cursor-pointer font-bold hover:bg-blue-500`}
           type="button"
           onClick={handleUploadButtonClick}
         >
           Upload
         </button>
         <button
-          className={`${file ? "block" : "hidden"} px-4 py-2 bg-blue-700 rounded-2xl text-white cursor-pointer font-bold hover:bg-blue-500`}
+          className={`${file ? "block" : "hidden"} px-4 py-2 justify-self-start bg-blue-700 rounded-2xl text-white cursor-pointer font-bold hover:bg-blue-500`}
           type="button"
           onClick={(e) => {
             e.stopPropagation();
+            setExtractedText("");
             setFile(null);
           }}
         >
@@ -89,7 +113,10 @@ const DragAndDrop = ({ file, setFile }: DragAndDropProps) => {
             ) : file ? (
               `${file.name} Uploaded`
             ) : (
-              <>Drag and Drop File here <br/> (.Docx or .pdf) <br/> lower than 20MB </>
+              <>
+                Drag and Drop File here <br /> (.Docx or .pdf) <br /> lower than
+                1 MB{" "}
+              </>
             )}
           </p>
           <input

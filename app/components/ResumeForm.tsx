@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import DragAndDrop from "./DragAndDrop";
+import AutoTextArea from "./AutoTextArea";
 
 const ResumeForm = () => {
   const [file, setFile] = useState<File | null>(null);
   const [jobDesc, setJobDesc] = useState<string>("");
+  const [extractedText, setExtractedText] = useState<string>("");
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
 
   const isEnabled = file !== null && jobDesc.trim().length > 15;
 
@@ -11,7 +14,11 @@ const ResumeForm = () => {
     // container
     <form className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-200 font-sans text-black">
       {/* Drag and Drop Section  */}
-      <DragAndDrop file={file} setFile={setFile} />
+      <DragAndDrop
+        file={file}
+        setFile={setFile}
+        setExtractedText={setExtractedText}
+      />
       {/* Job Description Section  */}
       <div className="flex flex-col gap-4 mt-4">
         <span className="p-2">Enter The Job Description</span>
@@ -22,6 +29,32 @@ const ResumeForm = () => {
           placeholder="Enter Role and Job Description to Tailor For"
         ></textarea>
       </div>
+
+      {extractedText && (
+        <div
+          className="md:col-span-2 w-full flex flex-col gap-2 items-start justify-start"
+          style={{ overflowAnchor: "none" }}
+        >
+          <div className="w-full flex items-center justify-between pr-10 gap-4 font-semibold">
+            <span className="px-2">
+              Please verify and Change the Extracted Text if required:
+            </span>
+            <button
+              type="button"
+              className="bg-blue-700 hover:bg-blue-500 text-white px-4 py-2 rounded-2xl cursor-pointer"
+              onClick={() => setIsCollapsed(!isCollapsed)}
+            >
+              {!isCollapsed ? "Collapse" : "Extend"}
+            </button>
+          </div>
+          {!isCollapsed && (
+            <AutoTextArea
+              extractedText={extractedText}
+              setExtractedText={setExtractedText}
+            />
+          )}
+        </div>
+      )}
 
       {/* buttons  */}
       <div className="md:col-span-2 flex items-center justify-center lg:justify-around gap-16">
