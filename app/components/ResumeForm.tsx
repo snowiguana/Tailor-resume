@@ -1,14 +1,29 @@
-import React, { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 import DragAndDrop from "./DragAndDrop";
 import AutoTextArea from "./AutoTextArea";
+import { tailorResumeAction } from "../actions/tailor";
 
-const ResumeForm = () => {
+interface props {
+  setIsOutput: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const ResumeForm = ({ setIsOutput }: props) => {
   const [file, setFile] = useState<File | null>(null);
   const [jobDesc, setJobDesc] = useState<string>("");
   const [extractedText, setExtractedText] = useState<string>("");
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
 
   const isEnabled = file !== null && jobDesc.trim().length > 15;
+
+  const handleTailor = async () => {
+    try {
+      const result = await tailorResumeAction(jobDesc, extractedText);
+      console.log(result);
+      setIsOutput(String(result));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     // container
@@ -49,8 +64,8 @@ const ResumeForm = () => {
           </div>
           {!isCollapsed && (
             <AutoTextArea
-              extractedText={extractedText}
-              setExtractedText={setExtractedText}
+              valueText={extractedText}
+              setValueText={setExtractedText}
             />
           )}
         </div>
@@ -59,6 +74,7 @@ const ResumeForm = () => {
       {/* buttons  */}
       <div className="md:col-span-2 flex items-center justify-center lg:justify-around gap-16">
         <button
+          onClick={handleTailor}
           type="button"
           disabled={!isEnabled}
           className="px-4 py-2 bg-blue-700 rounded-2xl font-bold text-white hover:bg-blue-500 cursor-pointer disabled:opacity-50"

@@ -1,14 +1,11 @@
 import React, { useEffect, useRef } from "react";
 
 interface AutoTextAreaProps {
-  extractedText: string | "";
-  setExtractedText: React.Dispatch<React.SetStateAction<string>>;
+  valueText: string | "";
+  setValueText: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const AutoTextArea = ({
-  extractedText,
-  setExtractedText,
-}: AutoTextAreaProps) => {
+const AutoTextArea = ({ valueText, setValueText }: AutoTextAreaProps) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const resize = () => {
@@ -20,18 +17,18 @@ const AutoTextArea = ({
 
   useEffect(() => {
     resize();
-  }, [extractedText]);
+  }, [valueText]);
 
   return (
     <textarea
       ref={textAreaRef}
-      value={extractedText}
+      value={valueText ? valueText : "Output"}
       onChange={(e) => {
-        setExtractedText(e.target.value);
+        setValueText(e.target.value);
         resize();
       }}
-      className="w-full max-h-[70vh] p-4 border rounded-xl overflow-y-auto resize-none box-border"
-      style={{ minHeight: "50px" }}
+      className="w-full max-h-[70vh] lg:h-full p-4 bg-black/20 m-auto backdrop-blur-md opacity-67 rounded-xl shadow-xl text-gray-800 overflow-y-auto resize-none box-border"
+      style={{ minHeight: "500px" }}
     />
   );
 };
