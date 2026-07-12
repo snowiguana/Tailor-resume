@@ -1,13 +1,15 @@
-import React, { SetStateAction, useState } from "react";
+"use client";
+import React, { useState } from "react";
 import DragAndDrop from "./DragAndDrop";
 import AutoTextArea from "./AutoTextArea";
 import { tailorResumeAction } from "../actions/tailor";
 
 interface props {
-  setIsOutput: React.Dispatch<React.SetStateAction<string>>;
+  setResume: React.Dispatch<React.SetStateAction<string>>;
+  setCoverLetter: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ResumeForm = ({ setIsOutput }: props) => {
+const ResumeForm = ({ setResume, setCoverLetter }: props) => {
   const [file, setFile] = useState<File | null>(null);
   const [jobDesc, setJobDesc] = useState<string>("");
   const [extractedText, setExtractedText] = useState<string>("");
@@ -18,8 +20,16 @@ const ResumeForm = ({ setIsOutput }: props) => {
   const handleTailor = async () => {
     try {
       const result = await tailorResumeAction(jobDesc, extractedText);
-      console.log(result);
-      setIsOutput(String(result));
+
+      if (!Array.isArray(result) && result.success === false) {
+        console.error(`Failed:`, result.error);
+        alert(result.error);
+        return;
+      }
+      const arr = result as [string, string];
+      setResume(String(arr[0]));
+      setCoverLetter(String(arr[1]));
+      console.log(arr);
     } catch (error) {
       console.log(error);
     }
@@ -71,8 +81,8 @@ const ResumeForm = ({ setIsOutput }: props) => {
         </div>
       )}
 
-      {/* buttons  */}
-      <div className="md:col-span-2 flex items-center justify-center lg:justify-around gap-16">
+      {/*Tailor  button  */}
+      <div className="md:col-span-2 flex items-center justify-start gap-16">
         <button
           onClick={handleTailor}
           type="button"
@@ -80,12 +90,6 @@ const ResumeForm = ({ setIsOutput }: props) => {
           className="px-4 py-2 bg-blue-700 rounded-2xl font-bold text-white hover:bg-blue-500 cursor-pointer disabled:opacity-50"
         >
           Tailor Resume
-        </button>
-        <button
-          disabled
-          className="px-4 py-2 bg-blue-700 rounded-2xl font-bold text-white hover:bg-blue-500 cursor-pointer disabled:opacity-50"
-        >
-          Download
         </button>
       </div>
     </form>
