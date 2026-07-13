@@ -2,7 +2,7 @@
 import { useState } from "react";
 import ResumeForm from "./components/ResumeForm";
 import AutoTextArea from "./components/AutoTextArea";
-import test from "./components/test";
+import DownloadButton from "./components/DownloadButton";
 
 export default function Home() {
   const [resume, setResume] = useState<string>("");
@@ -21,6 +21,16 @@ export default function Home() {
         setHomeText={setCoverLetter}
         isHome={true}
       />
+
+      {/* Download Buttons  */}
+      {resume ? (
+        <div className="md:col-span-2 flex items-center justify-end gap-8">
+          <DownloadButton content={resume} fileName="tailored-resume.pdf" />
+          <DownloadButton content={coverLetter} fileName="cover-letter.pdf" />
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 import React, { ChangeEvent, DragEvent, useRef, useState } from "react";
 import { parseDocumentAction } from "../actions/parse";
+import { Status } from "../types/types";
 
 interface DragAndDropProps {
   file: File | null;
@@ -12,6 +13,7 @@ const DragAndDrop = ({ file, setFile, setExtractedText }: DragAndDropProps) => {
   const MAX_FILE_SIZE = 1024 * 1024;
 
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [status, setStatus] = useState<Status>("idle");
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -30,16 +32,20 @@ const DragAndDrop = ({ file, setFile, setExtractedText }: DragAndDropProps) => {
 
     if (!selectedFile) return;
 
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    const result = await parseDocumentAction(formData);
+    setStatus("parsing");
 
-    if (result.success) {
-      setExtractedText(String(result.extractedText));
-    } else {
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      const result = await parseDocumentAction(formData);
+      if (result.success) {
+        setExtractedText(String(result.extractedText));
+      }
+    } catch (error) {
+      alert("An unexpected error occured while parsing the uploaded document.");
       setFile(null);
-      console.log("text extraction failed");
-      console.log(result.error);
+    } finally {
+      setStatus("idle");
     }
   };
 
@@ -82,11 +88,19 @@ const DragAndDrop = ({ file, setFile, setExtractedText }: DragAndDropProps) => {
           Upload Resume pdf or docx less than 1 MB
         </span>
         <button
-          className={`${file ? "hidden" : "block"} px-4 mr-2 py-2 bg-blue-700 rounded-2xl text-white cursor-pointer font-bold hover:bg-blue-500`}
+          disabled={status !== "idle"}
+          className={`${file ? "hidden" : "block"} px-4 mr-2 py-2 bg-blue-700 rounded-2xl  cursor-pointer text-white disabled:opacity-50 font-bold hover:bg-blue-500`}
           type="button"
           onClick={handleUploadButtonClick}
         >
-          Upload
+          {status === "parsing" ? (
+            <span className="flex items-center gap-2">
+              <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+              Extracting Text...
+            </span>
+          ) : (
+            "Upload"
+          )}
         </button>
         <button
           className={`${file ? "block" : "hidden"} px-4 py-2 justify-self-start bg-blue-700 rounded-2xl text-white cursor-pointer font-bold hover:bg-blue-500`}
