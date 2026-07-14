@@ -7,6 +7,7 @@ import { coverLetterPrompt, resumeTailoringPrompt } from "../lib/data";
 
 export async function tailorResumeAction(jobDesc: string, extractedText: string) {
     const apiKey = process.env.GEMINI_API_KEY;
+    const genModel = process.env.GEMINI_MODEL;
 
     if (jobDesc === "")
         return { success: false, error: 'Description is invalid' }
@@ -20,9 +21,11 @@ export async function tailorResumeAction(jobDesc: string, extractedText: string)
     try {
         if (!apiKey) {
             throw new Error("GEMINI API is not set environment variable")
+        } else if (!genModel) {
+            throw new Error('GEMINI generative model is not loaded from environment properly.')
         }
         const genAI = new GoogleGenerativeAI(apiKey)
-        const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite" });
+        const model = genAI.getGenerativeModel({ model: genModel });
 
         const [resumeRes, coverRes] = await Promise.all([
             model.generateContent(resumePrompt),
