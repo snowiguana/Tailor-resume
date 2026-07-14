@@ -2,7 +2,7 @@
 
 An AI-powered tool that tailors your resume and generates a matching cover letter for a specific job posting — built to help job seekers respond faster to postings without starting from a blank page every time.
 
-**Live Demo:** [add your deployed URL here]
+**Live Demo:** [[add your deployed URL here](https://tailor-resume-880isv8ys-snowiguanas-projects.vercel.app/)]
 
 ---
 
@@ -26,16 +26,16 @@ An AI-powered tool that tailors your resume and generates a matching cover lette
 
 To keep AI-generated output predictable and safely renderable, the resume and cover letter are returned using a constrained Markdown subset rather than open-ended Markdown. The model is prompted to use only the following markers:
 
-| Marker | Purpose |
-|---|---|
-| `#` | Section header (major sections) |
-| `##` | Subsection header |
-| `**text**` | Bold — used for the candidate's name in the header and sign-off |
-| `_text_` | Italic — used sparingly for secondary/qualifier info |
-| `[text](url)` | Link — only for existing clickable contact info from the original resume |
-| `::` | Right-align splitter — separates contact details on the header line (e.g. `email :: phone :: location`) |
-| `-` | Bullet point |
-| `---` | Horizontal separator — divides the header from the body |
+| Marker        | Purpose                                                                                                 |
+| ------------- | ------------------------------------------------------------------------------------------------------- |
+| `#`           | Section header (major sections)                                                                         |
+| `##`          | Subsection header                                                                                       |
+| `**text**`    | Bold — used for the candidate's name in the header and sign-off                                         |
+| `_text_`      | Italic — used sparingly for secondary/qualifier info                                                    |
+| `[text](url)` | Link — only for existing clickable contact info from the original resume                                |
+| `::`          | Right-align splitter — separates contact details on the header line (e.g. `email :: phone :: location`) |
+| `-`           | Bullet point                                                                                            |
+| `---`         | Horizontal separator — divides the header from the body                                                 |
 
 No other Markdown syntax is permitted in the model's output. This keeps the renderer simple and the PDF export consistent.
 
@@ -77,8 +77,9 @@ npm install
 
 Create a `.env.local` file with:
 
-```
+````
 GEMINI_API_KEY=your_key_here
+GEMINI_MODEL=gemini_model_here
 ```.
 
 
@@ -86,7 +87,7 @@ Then run:
 
 ```bash
 npm run dev
-```
+````
 
 ---
 
