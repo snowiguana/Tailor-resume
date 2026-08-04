@@ -2,23 +2,37 @@
 
 An AI-powered tool that tailors your resume and generates a matching cover letter for a specific job posting — built to help job seekers respond faster to postings without starting from a blank page every time.
 
-**Live Demo:** [https://tailor-resume-five.vercel.app/]
+**Live Demo:** [https://tailor-resume-five.vercel.app/](https://tailor-resume-five.vercel.app/)
+
+![Landing Page](/public/resume-tailor/landing.png)
 
 ---
 
-## What It Does
+## Features & Workflow
 
-1. **Upload your resume** — drag and drop or select a file (PDF or DOCX, under 1MB). A server action parses the document and extracts the raw text.
+### 1. Upload Your Resume
+Drag and drop or select a file (PDF or DOCX, under 1MB). A server action parses the document and extracts the raw text cleanly.
 
-2. **Review and edit the extracted text** — the parsed resume text appears in a collapsible, editable text area. Since this becomes the actual input sent to the AI, you can correct any parsing issues before proceeding.
+![Drag Resume](/public/resume-tailor/drag-resume.png)
 
-3. **Add the job details** — enter the job role, company name, and job description (under 500 words).
+### 2. Review and Edit Extracted Text
+The parsed resume text appears in a collapsible, editable text area. Since this becomes the actual input sent to the AI model, you can correct any parsing issues before proceeding.
 
-4. **Generate tailored content** — clicking "Tailor Resume" sends the resume text and job details to a server action, which calls the Claude API using a custom prompt to produce both a tailored resume and a matching cover letter.
+![Edit Parsed Text](/public/resume-tailor/edit-parsed-text.png)
 
-5. **Edit and preview** — the AI's output returns in a constrained Markdown format (see below), rendered in an editable text area. You can switch between the tailored resume and the cover letter, edit either one, and preview the formatted result live through an in-page PDF renderer.
+### 3. Add Job Details & Generate
+Enter the job role, company name, and job description (under 500 words). Clicking **"Tailor Resume"** sends the resume text and job details to a server action, which calls the Gemini API using custom prompts to produce both a tailored resume and a matching cover letter.
 
-6. **Download** — export either the tailored resume or the cover letter as a PDF.
+### 4. Edit and Preview Live
+The AI output returns in a constrained Markdown format, rendered in an editable text area alongside an in-page live PDF renderer. You can switch between the tailored resume and cover letter and view real-time changes as you edit.
+
+![Edit Tailored Resume](/public/resume-tailor/edit-tailored-resume.png)
+![View Changes in Real-Time](/public/resume-tailor/view-changes-in-real-time.png)
+
+### 5. Download Export
+Export either the tailored resume or the cover letter cleanly formatted as a PDF document.
+
+![Download PDF](/public/resume-tailor/downloadPdf.png)
 
 ---
 
@@ -30,10 +44,11 @@ To keep AI-generated output predictable and safely renderable, the resume and co
 |---|---|
 | `#` | Section header (major sections) |
 | `##` | Subsection header |
-| `**text**` | Bold — used for the candidate's name in the header and sign-off |
+| `###` | Sub-level plain heading |
+| `**text**` | Bold — used for keywords, skills, or candidate name (omitted in headers) |
 | `_text_` | Italic — used sparingly for secondary/qualifier info |
 | `[text](url)` | Link — only for existing clickable contact info from the original resume |
-| `::` | Right-align splitter — separates contact details on the header line (e.g. `email :: phone :: location`) |
+| `::` | Right-align splitter — separates contact/experience details (e.g., `email :: phone :: location`) |
 | `-` | Bullet point |
 | `---` | Horizontal separator — divides the header from the body |
 
@@ -41,56 +56,47 @@ No other Markdown syntax is permitted in the model's output. This keeps the rend
 
 ---
 
-## Error Handling
-
-All errors — failed uploads, parsing failures, oversized files, API/network errors — are surfaced to the user as alerts, so it's always clear where and why something went wrong.
-
----
-
 ## Tech Stack
 
-- **Frontend:** Next.js (App Router), Tailwind CSS
-- **File parsing:** Server action using `officeparser` (handles both PDF and DOCX through a single API)
-- **AI:** Claude API (Anthropic), custom prompts for resume tailoring and cover letter generation
-- **PDF rendering (preview):** in-browser PDF renderer for live preview
-- **PDF export:** client-side PDF generation and rendering (`@react-pdf/renderer`) for download
-- **Language:** TypeScript (server actions and API layer)
+- **Frontend:** Next.js (App Router), React, Tailwind CSS
+- **File Parsing:** Server actions using `officeparser` (handles both PDF and DOCX through a single API)
+- **AI Integration:** Google Gemini API (`@google/genai`), custom prompt architecture
+- **PDF Rendering & Export:** Client-side rendering and export using `@react-pdf/renderer`
+- **Language:** TypeScript
 
 ---
 
 ## Constraints
 
 - Single file upload only (one resume at a time)
-- Max file size: 1MB
-- Job description limited to 500 words
-- Accepted file types: PDF, DOCX
+- Max file size: **1MB**
+- Job description limited to **500 words**
+- Accepted file types: **PDF, DOCX**
+
+---
+
+## Error Handling
+
+All edge cases — failed uploads, parsing failures, oversized files, API/network errors — are caught gracefully and surfaced to the user as clear alerts so you always know what went wrong.
 
 ---
 
 ## Running Locally
 
+1. **Clone the repository:**
+   ```bash
+   git clone <https://github.com/snowiguana/tailor-resume>
+   cd tailor-resume
+   npm install
+
+
+2. **Configure Environment Variables:**
+Create a .env.local file in the root directory:
 ```bash
-git clone <repo-url>
-cd ai-resume-tailor
-npm install
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-3.5-flash
 ```
-
-Create a `.env.local` file with:
-
-```
-GEMINI_API_KEY=your_key_here
-GEMINI_MODEL=gemini_model_here
-```.
-
-
-Then run:
-
+3. **Start the Development Server:**
 ```bash
 npm run dev
 ```
-
----
-
-## Why I Built This
-
-Tailoring a resume for every job application is repetitive and time-consuming, especially when applying at volume. This project explores using an AI model as a structured writing assistant — constrained to a specific output format so the result can be reliably rendered and exported — rather than as an open-ended chat interface.

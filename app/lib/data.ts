@@ -4,12 +4,13 @@ Rewrite the resume below so it aligns with the target job description, while pre
 
 MARKER REFERENCE — use these markers exactly as specified, and no other Markdown syntax:
 - "#" → Section Header, used for major sections (e.g., "# Experience", "# Summary", "# Skills", "# Education", "# Certifications")
-- "##" → Subsection, used for titles/roles within Experience (e.g., "## Software Engineer")
-- "**text**" → Bold, used for emphasis on keywords, project titles, or the candidate's name
+- "##" → Subsection, used for titles/roles within Experience or Projects (e.g., "## Software Engineer", "## Momentum")
+- "###" → Sub-level Heading, used for plain sub-headings under main subsections
+- "**text**" → Bold, used for emphasis on keywords, skill categories, or the candidate's name (Do NOT use bold markdown ** inside section headers, subsection headers, or sub-level headings)
 - "_text_" → Italic, used for secondary/qualifier info (e.g., "_Expected 2027_")
 - "[text](url)" → Link, used only for clickable contact info or portfolio links that already exist in the original resume
 - "::" → Right-align splitter, used to pair a company/institution with a date range on one line (e.g., "Acme Corp :: 06/2021 – Present")
-- "-" → Bullet, used for list items (Experience/Project accomplishments)
+- "-" → Bullet, used for list items (Experience/Project accomplishments or Categorized Skills)
 - "---" → Separator, a horizontal line used for visual grouping between sections
 
 EXAMPLE — FORMAT REFERENCE ONLY (do not copy, reference, or reuse any names, companies, numbers, or content from this example; it exists solely to illustrate correct marker usage):
@@ -23,7 +24,9 @@ jordan.reyes@email.com :: (555) 123-4567 :: [linkedin.com/in/jordanreyes](https:
 Backend-focused Software Engineer with 5+ years building distributed systems and scalable APIs. Skilled in Python, Go, and cloud infrastructure, with a track record of improving system reliability and reducing latency in high-traffic environments.
 
 # Skills
-Python, Go, AWS, Docker, Kubernetes, PostgreSQL, REST APIs, CI/CD, System Design
+- Languages: **Python**, **Go**, **SQL**
+- Cloud & Infrastructure: **AWS**, **Docker**, **Kubernetes**
+- Architecture & Tools: **PostgreSQL**, **REST APIs**, **CI/CD**, **System Design**
 
 # Experience
 
@@ -35,6 +38,11 @@ Acme Corp :: 06/2021 – Present
 ## Software Engineer
 Beta Systems :: 01/2019 – 05/2021
 - Improved system uptime to 99.9%, measured by incident tracking dashboards, by migrating legacy services to containerized infrastructure.
+
+# Projects
+
+## Momentum
+- Developed a Kanban application to improve task tracking across distributed teams.
 
 # Education
 B.S. Computer Science — State University, 2018
@@ -49,19 +57,20 @@ TASK: Now apply the same structural approach to the actual resume and job descri
 Required sections, in this order (only include a section if relevant content exists in the original resume — do not include a section from the example above unless the actual resume also has one):
 1. Header — candidate's full name in **bold**, with email, phone, links, and/or location on the line directly below, separated by "::". Use "[text](url)" for any link that exists in the original resume. Follow the Header with a "---" separator. If the original resume contains no name and no contact information at all, omit the Header and the "---" separator entirely — do not invent a name or any contact detail under any circumstances.
 2. "# Summary"
-3. "# Skills"
+3. "# Skills" — Determine if the resume is technical or contains skills that naturally group into distinct domain categories (e.g., Languages, Frontend, Backend, Database, Tools & DevOps). If skills can be categorized, group them into clean bullet points with category names (e.g., "- Languages: **TypeScript**, **SQL**"). If the skills cannot or should not be categorized, format them as a comma-separated list or simple bullet points.
 4. "# Experience" — each role as a "##" sub-header (job title), followed by a line with "Company :: Date Range", followed by "-" bullets.
 5. "# Education"
-6. "# Certifications" or "# Projects" (only if present in the original resume)
+6. "# Certifications" or "# Projects" (only if present in the original resume; project titles must use plain "##" or "###" sub-headings without bold markdown)
 
 Rules:
 - Extract keywords, tools, and required skills from the job description and integrate them naturally into the resume, only where truthfully supported by the original content.
 - Do NOT invent, estimate, or add any fact, number, metric, employer, title, date, contact detail, link, or skill not already present in the original resume.
 - Rewrite each Experience bullet using the format: Accomplished [X], measured by [Y], by doing [Z] — only when a real metric exists in the original resume. If no metric exists for a bullet, rewrite it with a strong action verb and clear factual outcome, without adding a fabricated number.
 - Keep all employer names, job titles, and dates exactly as given.
+- Never wrap section headers, subsection headers, sub-level headings, or project titles in bold markers (do not write "**Title**" or "## **Title**"; write plain "## Title" or "### Title" instead).
 - If a standard section (e.g., Education, Certifications) has no corresponding content in the original resume, omit that section entirely rather than leaving a placeholder or writing "Not provided."
 - Use "_italic_" only if the original resume contains a genuine qualifier worth preserving (e.g., "in progress," "expected 2027") — do not add italics decoratively.
-- Do not use any Markdown syntax outside the marker set defined above (no additional heading levels, no numbered lists, no tables, no blockquotes, no pipe characters, no commas as separators in the header line).
+- Do not use any Markdown syntax outside the marker set defined above (no additional heading levels beyond "###", no numbered lists, no tables, no blockquotes, no pipe characters, no commas as separators in the header line).
 - Do not include any advice, suggestions, commentary, or explanation of changes.
 
 Output format:
@@ -82,7 +91,8 @@ Write a tailored cover letter for the role below, using only facts, experience, 
 MARKER REFERENCE — use these markers exactly as specified, and no other Markdown syntax:
 - "#" → Section Header, used for major sections (not typically needed in a cover letter body, but available if a section is warranted)
 - "##" → Subsection (not typically used in a cover letter)
-- "**text**" → Bold, used for the candidate's name in the Header and sign-off
+- "###" → Sub-level Heading (not typically used in a cover letter)
+- "**text**" → Bold, used for the candidate's name in the Header and sign-off (Do NOT use bold markdown ** inside section headers or sub-level headings)
 - "_text_" → Italic, used sparingly for genuine secondary/qualifier info if present
 - "[text](url)" → Link, used only for clickable contact info that already exists in the original resume
 - "::" → Right-align splitter, used to separate contact details on the Header line (e.g., "email :: phone :: location")
@@ -128,6 +138,7 @@ Rules:
 - Do NOT invent, estimate, or add any fact, employer, title, date, metric, achievement, or contact detail not already present in the original resume.
 - Do NOT invent or guess a company name or position title if it cannot be clearly identified from the job description — use the fallback language instead.
 - Tone: professional, confident, concise. No generic filler phrases not grounded in real resume content.
+- Never wrap section headers, subsection headers, or sub-level headings in bold markers (do not write "**Title**"; write plain titles instead).
 - Do not use any Markdown syntax outside the marker set defined above (no bullet points, no numbered lists, no tables, no blockquotes, no pipe characters, no commas as separators in the header line).
 - Do not include any advice, suggestions, commentary, extraction notes, or explanation of choices.
 
