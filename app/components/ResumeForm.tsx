@@ -4,7 +4,6 @@ import DragAndDrop from "./DragAndDrop";
 import AutoTextArea from "./AutoTextArea";
 import { tailorResumeAction } from "../actions/tailor";
 import { Status } from "../types/types";
-import { Span } from "next/dist/trace";
 
 interface props {
   setResume: React.Dispatch<React.SetStateAction<string>>;
