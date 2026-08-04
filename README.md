@@ -88,7 +88,7 @@ All edge cases — failed uploads, parsing failures, oversized files, API/networ
    git clone <https://github.com/snowiguana/tailor-resume>
    cd tailor-resume
    npm install
-
+   ```
 
 2. **Configure Environment Variables:**
 Create a .env.local file in the root directory:
